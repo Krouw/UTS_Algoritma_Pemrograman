@@ -1,0 +1,36 @@
+#include <iostream>
+#include <iomanip> // Diperlukan untuk std::setw
+
+// Nama: Dimoriansa Ramadhan
+// NIM: 240401010367
+// Kelas: IF-102
+// Nama Mata Kuliah: Algoritma dan Pemrograman
+
+using namespace std;
+
+int main() {
+    // Ukuran matriks
+    const int UKURAN = 5;
+
+    cout << "=== Program Perkalian Nilai Kolom dengan Baris ===" << endl;
+    cout << " Matriks hasil perkalian baris (i) dengan kolom (j) " << endl;
+    cout << "==================================================" << endl;
+
+    // Perulangan untuk baris (i)
+    for (int i = 1; i <= UKURAN; ++i) {
+        // Perulangan untuk kolom (j)
+        for (int j = 1; j <= UKURAN; ++j) {
+            // Hitung hasil perkalian
+            int hasil = i * j;
+            
+            // Cetak hasil dengan lebar 4 karakter untuk format yang rapi
+            cout << setw(4) << hasil;
+        }
+        // Pindah baris setelah satu baris selesai dicetak
+        cout << endl;
+    }
+
+    cout << "==================================================" << endl;
+
+    return 0;
+}
