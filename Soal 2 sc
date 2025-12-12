@@ -1,0 +1,160 @@
+// Jawaban: Program Hitung Honor Karyawan Kontrak PT. DINGIN DAMAI
+// Nama: Dimoriansa Ramadhan
+// NIM: 240401010367
+// Kelas: IF-102
+// Nama Mata Kuliah: Algoritma dan Pemrograman
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <cctype>
+
+using namespace std;
+
+// Konstanta
+const double HONOR_TETAP = 3500000.0; // Honor tetap per bulan [cite: 2]
+const double HONOR_LEMBUR_PERJAM = 12500.0; // Honor lembur per jam [cite: 10]
+const int JAM_KERJA_NORMAL = 8; // Jam kerja normal per hari [cite: 9]
+
+// Fungsi untuk mendapatkan persentase tunjangan jabatan berdasarkan golongan.
+// parameter golongan Golongan karyawan (1, 2, atau 3).
+// return Persentase tunjangan jabatan (dalam bentuk desimal).
+double get_persentase_jabatan(int golongan) {
+    if (golongan == 1) {
+        return 0.05; // 5% [cite: 4]
+    } else if (golongan == 2) {
+        return 0.10; // 10% [cite: 4]
+    } else if (golongan == 3) {
+        return 0.15; // 15% [cite: 4]
+    }
+    return 0.0;
+}
+
+// Fungsi untuk mendapatkan persentase tunjangan pendidikan.
+// parameter pendidikan, Kode pendidikan (1, 2, atau 3) atau string ("SMU", "D3", "S1").
+// return Persentase tunjangan pendidikan (dalam bentuk desimal).
+double get_persentase_pendidikan(const string& pendidikan_input) {
+    string pendidikan = pendidikan_input;
+    for (char &c : pendidikan) {
+        c = toupper(c);
+    }
+
+    if (pendidikan == "SMU" || pendidikan == "SMA" || pendidikan == "1") {
+        return 0.025; // 2.5% [cite: 7]
+    } else if (pendidikan == "D3" || pendidikan == "2") {
+        return 0.05; // 5% [cite: 7]
+    } else if (pendidikan == "S1" || pendidikan == "3") {
+        return 0.075; // 7.5% [cite: 7]
+    }
+    return 0.0;
+}
+
+// Fungsi utama untuk menghitung honor karyawan.
+void hitung_honor() {
+    string nama_karyawan;
+    int golongan;
+    string pendidikan_input;
+    int jam_kerja;
+
+    // --- Layar Masukan [cite: 12] ---
+    cout << "========================================================" << endl;
+    cout << "Program Hitung Honor Karyawan Kontrak PT. DINGIN DAMAI" << endl; // [cite: 13]
+    cout << "========================================================" << endl;
+
+    cout << "Nama Karyawan           : "; // [cite: 14]
+    getline(cin, nama_karyawan);
+
+    // Input Golongan dengan validasi [cite: 15, 28]
+    do {
+        cout << "Golongan (1, 2, atau 3) : ";
+        if (!(cin >> golongan) || (golongan < 1 || golongan > 3)) {
+            cout << "Input golongan tidak valid. Harap masukkan 1, 2, atau 3." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+        } else {
+            break;
+        }
+    } while (true);
+
+    // Input Pendidikan dengan validasi [cite: 16, 28]
+    do {
+        cout << "Pendidikan (SMU/D3/S1)  : ";
+        cin >> pendidikan_input;
+        if (get_persentase_pendidikan(pendidikan_input) == 0.0) {
+            cout << "Input pendidikan tidak valid. Harap masukkan SMU, D3, atau S1." << endl;
+        } else {
+            break;
+        }
+    } while (true);
+
+    // Input Jumlah Jam Kerja [cite: 17]
+    do {
+        cout << "Jumlah Jam Kerja        : ";
+        if (!(cin >> jam_kerja) || jam_kerja < 0) {
+            cout << "Input jumlah jam kerja tidak valid." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+        } else {
+            break;
+        }
+    } while (true);
+
+    cin.ignore(10000, '\n');
+
+    // --- Proses Perhitungan ---
+    // 1. Tunjangan Jabatan [cite: 3]
+    double persentase_jabatan = get_persentase_jabatan(golongan);
+    double tunjangan_jabatan = persentase_jabatan * HONOR_TETAP;
+
+    // 2. Tunjangan Pendidikan [cite: 6]
+    double persentase_pendidikan = get_persentase_pendidikan(pendidikan_input);
+    double tunjangan_pendidikan = persentase_pendidikan * HONOR_TETAP;
+
+    // 3. Honor Lembur [cite: 8]
+    double honor_lembur = 0.0;
+    if (jam_kerja > JAM_KERJA_NORMAL) { // Honor lembur jika jam kerja > 8 jam [cite: 9]
+        int jam_lembur = jam_kerja - JAM_KERJA_NORMAL;
+        honor_lembur = jam_lembur * HONOR_LEMBUR_PERJAM; // [cite: 10]
+    }
+
+    // 4. Total Honor yang Diterima
+    double total_honor = HONOR_TETAP + tunjangan_jabatan + tunjangan_pendidikan + honor_lembur;
+
+    // --- Layar Keluaran [cite: 18] ---
+    cout << "\n========================================================" << endl;
+    cout << "                     Rincian Honor                      " << endl;
+    cout << "========================================================" << endl;
+    cout << "Karyawan yang bernama  : " << nama_karyawan << endl; // [cite: 19]
+    cout << "\nHonor yang diterima" << endl; // [cite: 20]
+
+    // Set format untuk mata uang
+    cout << fixed << setprecision(0);
+
+    cout << "Honor Tetap            Rp. " << setw(10) << right << HONOR_TETAP << endl; // [cite: 21]
+    cout << "Tunjangan Jabatan      Rp. " << setw(10) << right << tunjangan_jabatan << endl; // [cite: 22]
+    cout << "Tunjangan Pendidikan   Rp. " << setw(10) << right << tunjangan_pendidikan << endl; // [cite: 23]
+    cout << "Honor Lembur           Rp. " << setw(10) << right << honor_lembur << endl; // [cite: 24]
+    cout << "---------------------------------------+" << endl; // [cite: 25]
+    cout << "Honor Yang Diterima    Rp. " << setw(10) << right << total_honor << endl; // [cite: 26]
+    cout << "========================================================" << endl;
+}
+
+// Fungsi main program.
+int main() {
+    char ulangi;
+    do {
+        // Fungsi perhitungan honor
+        hitung_honor();
+
+        // Tanya untuk hitung ulang [cite: 27]
+        cout << "Hitung ulang Honor Karyawan Lainnya (Y/N)? ";
+        cin >> ulangi;
+        ulangi = toupper(ulangi);
+
+        cin.ignore(10000, '\n');
+
+    } while (ulangi == 'Y');
+
+    cout << "Program selesai. Terima kasih." << endl;
+    return 0;
+}
