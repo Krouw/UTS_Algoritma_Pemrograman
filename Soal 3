@@ -1,0 +1,151 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <map>
+
+// Nama: Dimoriansa Ramadhan
+// NIM: 240401010367
+// Kelas: IF-102
+// Nama Mata Kuliah: Algoritma dan Pemrograman
+
+using namespace std;
+
+// Struktur data untuk menyimpan harga
+struct HargaSusu {
+    long long kecil;
+    long long sedang;
+    long long besar;
+};
+
+// Fungsi untuk mendapatkan nama merek susu berdasarkan kode
+string getNamaMerek(char kode) {
+    if (kode == 'A') return "Dancow"; // [cite: 3]
+    if (kode == 'B') return "Bendera"; // [cite: 4]
+    if (kode == 'C') return "SGM"; // [cite: 5]
+    return ""; // Kode tidak valid
+}
+
+// Fungsi untuk mendapatkan nama ukuran kaleng berdasarkan kode
+string getNamaUkuran(int kode) {
+    if (kode == 1) return "Kecil"; // [cite: 7]
+    if (kode == 2) return "Sedang"; // [cite: 8]
+    if (kode == 3) return "Besar"; // [cite: 9]
+    return ""; // Kode tidak valid
+}
+
+// Fungsi utama
+int main() {
+    char ulangi;
+
+    // Data harga susu 
+    map<char, HargaSusu> daftarHarga;
+    daftarHarga['A'] = {15000, 20000, 25000}; // Dancow (Kecil, Sedang, Besar)
+    daftarHarga['B'] = {13500, 17500, 20000}; // Bendera (Kecil, Sedang, Besar)
+    daftarHarga['C'] = {15000, 18500, 22000}; // SGM (Kecil, Sedang, Besar)
+
+    do {
+        system("cls"); 
+
+        // --- Layar Masukkan [cite: 15] ---
+        cout << "===========================" << endl;
+        cout << "TOKO KELONTONG KERONCONGAN" << endl; // [cite: 16]
+        cout << "--------------------------" << endl; // [cite: 17]
+        cout << "KODE MEREK SUSU:" << endl;
+        cout << "A: Dancow" << endl; // [cite: 18]
+        cout << "   - 1: Ukuran Kecil" << endl; // [cite: 19]
+        cout << "   - 2: Ukuran Sedang" << endl; // [cite: 20]
+        cout << "   - 3: Ukuran Besar" << endl; // [cite: 21]
+        cout << "B: Bendera" << endl; // [cite: 22]
+        cout << "   - 1: Ukuran Kecil" << endl; // [cite: 23]
+        cout << "   - 2: Ukuran Sedang" << endl; // [cite: 24]
+        cout << "   - 3: Ukuran Besar" << endl; // [cite: 25]
+        cout << "C: SGM" << endl; // [cite: 26]
+        cout << "   - 1: Ukuran Kecil" << endl; // [cite: 27]
+        cout << "   - 2: Ukuran Sedang" << endl; // [cite: 28]
+        cout << "   - 3: Ukuran Besar" << endl; // [cite: 29]
+        cout << "--------------------------" << endl;
+
+        // Variabel input
+        char kodeMerek;
+        int kodeUkuran;
+        int banyakBeli;
+        long long hargaSatuan = 0;
+        long long totalBayar = 0;
+        
+        // Input dan Validasi Jenis Susu (Kode Merek) [cite: 2, 31, 37]
+        do {
+            cout << "Masukan Jenis Susu (A/B/C) \t: ";
+            cin >> kodeMerek;
+            kodeMerek = toupper(kodeMerek); 
+            if (daftarHarga.find(kodeMerek) == daftarHarga.end()) {
+                cout << "Kode merek tidak valid. Silakan input ulang." << endl;
+            }
+        } while (daftarHarga.find(kodeMerek) == daftarHarga.end());
+
+        // Input dan Validasi Ukuran Kaleng [cite: 6, 32, 37]
+        do {
+            cout << "Masukan Ukuran Kaleng (1/2/3) \t: ";
+            if (!(cin >> kodeUkuran) || (kodeUkuran < 1 || kodeUkuran > 3)) {
+                cout << "Kode ukuran tidak valid. Silakan input ulang." << endl;
+                cin.clear(); 
+                cin.ignore(10000, '\n'); 
+            } else {
+                break;
+            }
+        } while (true);
+
+        // Menentukan Harga Satuan [cite: 10]
+        HargaSusu harga = daftarHarga[kodeMerek];
+        if (kodeUkuran == 1) {
+            hargaSatuan = harga.kecil;
+        } else if (kodeUkuran == 2) {
+            hargaSatuan = harga.sedang;
+        } else if (kodeUkuran == 3) {
+            hargaSatuan = harga.besar;
+        }
+        
+        // Input Jumlah Beli [cite: 34, 37]
+        do {
+            cout << "Jumlah Yang dibeli \t\t: ";
+            if (!(cin >> banyakBeli) || banyakBeli <= 0) {
+                cout << "Jumlah beli tidak valid. Silakan input ulang." << endl;
+                cin.clear(); 
+                cin.ignore(10000, '\n');
+            } else {
+                break;
+            }
+        } while (true);
+
+        // --- Proses Perhitungan [cite: 12] ---
+        // Total Bayar = Harga Susu per-ukuran dan Jenis dikali dengan banyak beli 
+        totalBayar = hargaSatuan * banyakBeli;
+
+        // --- Layar Keluaran [cite: 30] ---
+        system("cls");
+        cout << "=======================================" << endl;
+        cout << "TOKO KELONTONG KERONCONGAN - STRUK" << endl;
+        cout << "---------------------------------------" << endl;
+        
+        cout << "Merek Susu \t\t: " << getNamaMerek(kodeMerek) << endl;
+        cout << "Ukuran Kaleng \t\t: " << getNamaUkuran(kodeUkuran) << endl;
+        
+        // Tampilkan Harga Satuan [cite: 33]
+        cout << "Harga Satuan Barang \tRp. " << fixed << setprecision(0) << hargaSatuan << endl;
+        cout << "Jumlah Yang dibeli \t: " << banyakBeli << " kaleng" << endl;
+        
+        cout << "---------------------------------------" << endl;
+        // Tampilkan Total Pembayaran [cite: 35]
+        cout << "Harga Yang Harus dibayar Sebesar Rp. " << fixed << setprecision(0) << totalBayar << endl;
+        cout << "=======================================" << endl;
+
+        // Tanya untuk transaksi selanjutnya 
+        cout << "Ingin hitung transaksi lainnya (Y/N)? ";
+        cin >> ulangi;
+        ulangi = toupper(ulangi);
+
+    } while (ulangi == 'Y');
+
+    cout << "\nTerima kasih telah berbelanja!" << endl;
+
+    return 0;
+}
